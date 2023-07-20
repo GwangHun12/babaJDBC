@@ -5,10 +5,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudentDAO {
 
-	public static void main(String[] args) {
+	public List<Student> selectAll() {
 		/*
 		 * 1. 드라이버 등록
 		 * 2. DB 연결 생성
@@ -22,6 +24,7 @@ public class StudentDAO {
 		String user = "STUDENT";
 		String password = "STUDENT";
 		String query = "SELECT * FROM STUDENT_TBL";
+		List<Student> sList = new ArrayList<Student>();
 		try {
 			// 1. 드라이버 등록
 			Class.forName(driverName);
@@ -34,8 +37,21 @@ public class StudentDAO {
 			ResultSet rset = 
 					stmt.executeQuery(query);
 			while(rset.next()) {
-				System.out.printf("아이디 : %s, 이름 : %s\n", rset.getString("STUDENT_ID")
-						 , rset.getString("STUDENT_NAME"));
+				Student student = new Student();
+				student.setStudentId(rset.getString("STUDENT_ID"));
+				student.setStudentPwd(rset.getString("STUDENT_PWD"));
+				student.setStudentName(rset.getString("STUDENT_NAME"));
+				student.setAge(rset.getInt("AGE"));
+				student.setEmail(rset.getString("EMAIL"));
+				student.setPhone(rset.getString("PHONE"));
+				student.setGender(rset.getString("GENDER").charAt(0));
+				student.setAddress(rset.getString("ADDRESS"));
+				student.setHobby(rset.getString("HOBBY"));
+				student.setEnrollDate(rset.getDate("ENROLL_DATE"));
+//				List<Student> sList = new ArrayList<Student>();
+				sList.add(student);
+//				System.out.printf("아이디 : %s, 이름 : %s\n", rset.getString("STUDENT_STMT")
+//						 , rset.Email("ENOLL_DATE"));
 			}
 			rset.close();
 			stmt.close();
@@ -45,5 +61,7 @@ public class StudentDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return sList;
 	}
+
 }

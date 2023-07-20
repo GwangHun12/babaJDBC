@@ -17,13 +17,13 @@ public class Student {
 	public String getStudentId() {
 		return studentId;
 	}
-	public void setStudentID(String studentId) {
+	public void setStudentId(String studentId) {
 		this.studentId = studentId;
 	}
 	public String getStudentPwd() {
 		return studentPwd;
 	}
-	public void setStudnetPwd(String studentPwd) {
+	public void setStudentPwd(String studentPwd) {
 		this.studentPwd = studentPwd;
 	}
 	public String getStudentName() {
