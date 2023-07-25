@@ -3,18 +3,18 @@ package com.kh.jdbc.day04.student.model.service;
 import java.sql.Connection;
 import java.util.List;
 
-import com.kh.jdbc.day04.student.common.JDBCTemplate;
+import com.kh.jdbc.day04.student.common.JDBCTemplate_old;
 import com.kh.jdbc.day04.student.model.dao.StudentDAO;
 import com.kh.jdbc.day04.student.model.vo.Student;
 
 public class StudentService {
 	private StudentDAO sDao;
-	private JDBCTemplate jdbcTemplate;
+	private JDBCTemplate_old jdbcTemplate;
 
 	public StudentService() {
 		sDao = new StudentDAO();
 //		jdbcTemplate = new JDBCTemplate();	// 생성자가 private이기 때문에 사용 못함.
-		jdbcTemplate = JDBCTemplate.getInstance();
+		jdbcTemplate = JDBCTemplate_old.getInstance();
 	}
 
 	public List<Student> selectAll() {

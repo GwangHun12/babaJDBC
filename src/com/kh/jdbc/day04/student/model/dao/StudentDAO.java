@@ -1,5 +1,9 @@
 package com.kh.jdbc.day04.student.model.dao;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.sql.*;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,11 +12,29 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
-import com.kh.jdbc.day04.student.common.JDBCTemplate;
+import com.kh.jdbc.day04.student.common.JDBCTemplate_old;
 import com.kh.jdbc.day04.student.model.vo.Student;
 
 public class StudentDAO {
+	
+	private Properties prop;
+	
+	public StudentDAO() {
+		prop = new Properties();
+		Reader reader;
+		try {
+			reader = new FileReader("resources/query.properties");
+			prop.load(reader);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	/*
 	 * 1. Statement
@@ -40,7 +62,7 @@ public class StudentDAO {
 	public List<Student> selectAll(Connection conn) {
 		Statement stmt = null;
 		ResultSet rset = null;
-		String query = "SELECT * FROM STUDENT_TBL";
+		String query = prop.getProperty("selectAll");
 		List<Student> sList = null;
 		try {
 			stmt = conn.createStatement();
@@ -57,7 +79,6 @@ public class StudentDAO {
 			try {
 				rset.close();
 				stmt.close();
-				conn.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -80,7 +101,7 @@ public class StudentDAO {
 		return student;
 	}
 	public Student selectOneById(Connection conn, String studentId) {
-		String query = "SELECT * FROM STUDENT_TBL WHERE STUDENT_ID = ?";
+		String query = prop.getProperty("selectOneById");
 		Student student = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -100,7 +121,6 @@ public class StudentDAO {
 			try {
 				rset.close();
 				pstmt.close();
-				conn.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -109,7 +129,7 @@ public class StudentDAO {
 		return student;
 	}
 	public List<Student> selectAllByName(Connection conn, String studentName) {
-		String query = "SELECT * FROM STUDENT_TBL WHERE STUDENT_NAME = ?";
+		String query = prop.getProperty("selectAllByName");
 		List<Student> sList = new ArrayList<Student>();
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -130,7 +150,6 @@ public class StudentDAO {
 			try {
 				rset.close();
 				pstmt.close();
-				conn.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -139,7 +158,7 @@ public class StudentDAO {
 		return sList;
 	}
 	public int deleteStudent(Connection conn, String studentId) {
-		String query = "DELETE FROM STUDENT_TBL WHERE STUDENT_ID = ?";
+		String query = prop.getProperty("deleteStudent");
 		int result = -1;
 		PreparedStatement pstmt = null;
 		try {
@@ -154,7 +173,6 @@ public class StudentDAO {
 		} finally {
 			try {
 				pstmt.close();
-				conn.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -163,7 +181,7 @@ public class StudentDAO {
 		return result;
 	}
 	public int insertStudent(Connection conn, Student student) {
-		String query = "INSERT INTO STUDENT_TBL VALUES(?,?,?,?,?,?,?,?,?,SYSDATE)";
+		String query = prop.getProperty("insertStudent");
 		int result = -1;
 		PreparedStatement pstmt = null;
 		try {
@@ -187,7 +205,6 @@ public class StudentDAO {
 		} finally {
 			try {
 				pstmt.close();
-				conn.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -196,7 +213,7 @@ public class StudentDAO {
 		return result;
 	}
 	public int updateStudent(Connection conn, Student student) {
-		String query = "UPDATE STUDENT_TBL SET STUDENT_PWD = ?, EMAIL = ?, PHONE = ?, ADDRESS = ?, HOBBY = ? WHERE STUDENT_ID = ?";
+		String query = prop.getProperty("updateStudent");
 		int result = -1;
 		PreparedStatement pstmt = null;
 		try {
@@ -216,7 +233,6 @@ public class StudentDAO {
 		} finally {
 			try {
 				pstmt.close();
-				conn.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
